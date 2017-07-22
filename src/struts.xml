@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+
+    <constant name="struts.devMode" value="false" />
+
+	<package name="shop" extends="struts-default" namespace="/">
+		<interceptors>
+			<interceptor name="privilegeInterceptor" class="com.lzc.shop.interceptor.PrivilegeInterceptor"></interceptor>
+		</interceptors>
+	
+		<global-results>
+			<result name="msg">/WEB-INF/jsp/msg.jsp</result>
+			<result name="login">/WEB-INF/jsp/login.jsp</result>
+			<result name="adminLogin">/admin/index.jsp</result>
+		</global-results>
+		
+		<!-- 配置首页访问的action -->
+		<action name="index" class="indexAction">
+			<result name="index">/WEB-INF/jsp/index.jsp</result>
+		</action>
+		
+		<!-- 用户的action -->
+		<action name="user_*" class="userAction" method="{1}">
+			<result name="registPage">/WEB-INF/jsp/regist.jsp</result>
+			<result name="input">/WEB-INF/jsp/regist.jsp</result>
+			<result name="loginPage">/WEB-INF/jsp/login.jsp</result>
+			<result name="loginSuccess" type="redirectAction">index</result>
+			<result name="quit" type="redirectAction">index</result>
+			<result name="checkImgFail">/WEB-INF/jsp/regist.jsp</result>
+			<result name="checkImgFail1">/WEB-INF/jsp/login.jsp</result>
+		</action>
+		
+		<!-- 验证码的action -->
+		<action name="checkImg" class="com.lzc.shop.user.action.CheckImgAction"></action>
+		
+		<!-- 商品模块的action -->
+		<action name="product_*" class="productAction" method="{1}">
+			<result name="findByPid">/WEB-INF/jsp/product.jsp</result>
+			<result name="findByCid">/WEB-INF/jsp/productList.jsp</result>
+			<result name="findByCsid">/WEB-INF/jsp/productList.jsp</result>
+		</action>
+		
+		<!-- 购物车模块的action -->
+		<action name="cart_*" class="cartAction" method="{1}">
+			<result name="addCart">/WEB-INF/jsp/cart.jsp</result>
+			<result name="removeCart">/WEB-INF/jsp/cart.jsp</result>
+			<result name="clearCart">/WEB-INF/jsp/cart.jsp</result>
+			<result name="myCart">/WEB-INF/jsp/cart.jsp</result>
+		</action>
+		
+		<!-- 订单模块的action -->
+		<action name="order_*" class="orderAction" method="{1}">
+			<result name="submitorder">/WEB-INF/jsp/order.jsp</result>
+			<result name="findByUid">/WEB-INF/jsp/orderList.jsp</result>
+			<result name="findByOid">/WEB-INF/jsp/order.jsp</result>
+			<result name="updateState">/WEB-INF/jsp/msg.jsp</result>
+		</action>
+		
+		<!-- 后台管理员登录模块的action -->
+		<action name="adminUser_*" class="adminUserAction" method="{1}">
+			<result name="loginsuccess">/admin/home.jsp</result>
+			<result name="input">/admin/index.jsp</result>
+			<result name="loginfail">/admin/index.jsp</result>
+		</action>
+		
+		<!-- 后台用户管理的action -->
+		<action name="adminUserManage_*" class="com.lzc.shop.user.adminUserAction.AdminUserManageAction" method="{1}">
+			<result name="findAll">/admin/user/list.jsp</result>
+			<result name="preEdit">/admin/user/edit.jsp</result>
+			<result name="update" type="redirectAction">adminUserManage_findAll.action?currentPage=1</result>
+			<result name="delete" type="redirectAction">adminUserManage_findAll.action?currentPage=1</result>
+			
+			<interceptor-ref name="privilegeInterceptor"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		
+		<!-- 后台一级分类管理的action -->
+		<action name="adminCategoryManage_*" class="adminCategoryAction" method="{1}">
+			<result name="findAll">/admin/category/list.jsp</result>
+			<result name="editPage">/admin/category/edit.jsp</result>
+			<result name="addCategory" type="redirectAction">adminCategoryManage_findAll.action</result>
+			<result name="deleteCategory" type="redirectAction">adminCategoryManage_findAll.action</result>
+			
+			<interceptor-ref name="privilegeInterceptor"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		
+		<!-- 后台二级分类管理的action -->
+		<action name="adminCategorySecondManage_*" class="adminCategorySecondAction" method="{1}">
+			<result name="findAll">/admin/categorysecond/list.jsp</result>
+			<result name="addPage">/admin/categorysecond/add.jsp</result>
+			<result name="addCategorySecond" type="redirectAction">adminCategorySecondManage_findAll.action?currentPage=1</result>
+			<result name="preEdit">/admin/categorysecond/edit.jsp</result>
+			<result name="update" type="redirectAction">adminCategorySecondManage_findAll.action?currentPage=1</result>
+			<result name="delete" type="redirectAction">adminCategorySecondManage_findAll.action?currentPage=1</result>
+			
+			<interceptor-ref name="privilegeInterceptor"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		
+		<!-- 后台商品管理的action -->
+		<action name="adminProductManage_*" class="adminProductAction" method="{1}">
+			<result name="findAll">/admin/product/list.jsp</result>
+			<result name="addPage">/admin/product/add.jsp</result>
+			<result name="save" type="redirectAction">adminProductManage_findAll.action?currentPage=1</result>
+			<result name="preEdit">/admin/product/edit.jsp</result>
+			<result name="update" type="redirectAction">adminProductManage_findAll.action?currentPage=1</result>
+			<result name="delete" type="redirectAction">adminProductManage_findAll.action?currentPage=1</result>
+			
+			<interceptor-ref name="privilegeInterceptor"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		
+		<!-- 后台订单管理的action -->
+		<action name="adminOrderManage_*" class="adminOrderAction" method="{1}">
+			<result name="findAllByPage">/admin/order/list.jsp</result>
+			<result name="findByState">/admin/order/list.jsp</result>
+			<result name="findOrderItem">/admin/order/orderItem.jsp</result>
+			<result name="updateState" type="redirectAction">adminOrderManage_findAllByPage.action?currentPage=1</result>
+			
+			<interceptor-ref name="privilegeInterceptor"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		
+	</package>
+</struts>

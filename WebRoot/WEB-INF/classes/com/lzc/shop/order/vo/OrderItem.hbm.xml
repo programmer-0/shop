@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping>
+	<class name="com.lzc.shop.order.vo.OrderItem">
+		<id name="itemid">
+			<generator class="native"/>
+		</id>
+		<!-- 普通属性 -->
+		<property name="count"/>
+		<property name="subtotal"/>
+		
+		<!-- 关联关系：与商品的关联 -->
+		<many-to-one name="product" class="com.lzc.shop.product.vo.Product" column="pid" lazy="false"/>
+		
+		<!-- 关联关系：与订单的关联 -->
+		<many-to-one name="order" class="com.lzc.shop.order.vo.Order" column="oid" lazy="false"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping>
+	<class name="com.lzc.shop.order.vo.Order" table="orders">
+		<id name="oid">
+			<generator class="native"/>
+		</id>
+		<!-- 普通属性： -->
+		<property name="total"/>
+		<property name="ordertime"/>
+		<property name="state"/>
+		<property name="name"/>
+		<property name="addr"/>
+		<property name="phone"/>
+		
+		<!-- 关联关系：与用户的关联 -->
+		<many-to-one name="user" class="com.lzc.shop.user.vo.User" lazy="false" column="uid"/>
+		
+		<!-- 关联关系：与订单项的关联 -->
+		<set name="orderItems" lazy="false" cascade="save-update">
+			<key column="oid"/>
+			<one-to-many class="com.lzc.shop.order.vo.OrderItem"/>
+		</set>
+	</class>
+</hibernate-mapping>
